@@ -16,17 +16,15 @@ class PuntoDeVentaTest {
 	SEM mockSEM;
 	EstacionadoPV mockEstacionado;
 
-
 	@BeforeEach
 	void setUp() throws Exception {
 
-			
 		// Creo un mock de la clase EstaciondoPV
 		mockEstacionado = Mockito.mock(EstacionadoPV.class);
-				
+
 		// Creo un mock de la clase SEM
 		mockSEM = Mockito.mock(SEM.class);
-		
+
 		// Creo una instancia de PuntoDeVenta pasando el mock de SEM.
 		puntoDeVenta = new PuntoDeVenta(mockSEM);
 
@@ -37,23 +35,18 @@ class PuntoDeVentaTest {
 		assertEquals(mockSEM, puntoDeVenta.getSEM());
 
 	}
-	
+
 	@Test
 	void test2_UnPuntoDeVentaPuedeRegistrarUnEstacionamiento() {
-		
-		
-		
-		puntoDeVenta.registrarEstacionamiento("AAA-111",2);
-		
-//		when(mockEstacionado.getHoras()).thenReturn(2);
-//		when(mockEstacionado.getPatente()).thenReturn("AAA");
-//		
-//		
-//		
-//		verify(mockSEM).registrarEstacionamiento(argThat(estacionado -> estacionado.getPatente().equals("AAA") && estacionado.getHoras() == 2));
-//		
-		
+
+		puntoDeVenta.registrarEstacionamiento("AAA-111", 2);
+
+		when(mockEstacionado.getHoras()).thenReturn(2);
+		when(mockEstacionado.getPatente()).thenReturn("AAA");
+
+		verify(mockSEM).registrarEstacionamiento(
+		argThat(estacionado -> estacionado.getPatente().equals("AAA") && estacionado.getHoras() == 2));
+
 	}
-	
 
 }

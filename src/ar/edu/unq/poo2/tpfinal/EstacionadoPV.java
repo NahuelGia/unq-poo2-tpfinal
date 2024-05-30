@@ -1,10 +1,16 @@
 package ar.edu.unq.poo2.tpfinal;
 
-public class EstacionadoPV {
+import java.time.LocalTime;
 
-	public EstacionadoPV(String patente, int horas) {
+public class EstacionadoPV extends Estacionado {
+
+	
+	
+	public EstacionadoPV(String patente, LocalTime horaInicio, LocalTime horaFin,int cantHoras) {
+		super(patente, horaInicio, horaFin);
 		// TODO Auto-generated constructor stub
 	}
+
 
 	public String getPatente() {
 		return null;
@@ -15,6 +21,12 @@ public class EstacionadoPV {
 	public int getHoras() {
 		return 0;
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public boolean tieneNroTelefonico(int nro) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
