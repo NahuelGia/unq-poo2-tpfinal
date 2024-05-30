@@ -20,7 +20,7 @@ public abstract class Estacionado {
 		return patente;
 	}
 
-	public void setPatente(String patente) {
+	private void setPatente(String patente) {
 		this.patente = patente;
 	}
 
@@ -28,7 +28,7 @@ public abstract class Estacionado {
 		return horaInicio;
 	}
 
-	public void setHoraInicio(LocalTime horaInicio) {
+	private void setHoraInicio(LocalTime horaInicio) {
 		this.horaInicio = horaInicio;
 	}
 
@@ -41,5 +41,12 @@ public abstract class Estacionado {
 	}
 	
 	
+	public boolean estaVigente() {
+		LocalTime horaActual = LocalTime.now();
+		
+		return horaActual.isBefore(this.getHoraFin());
+	}
+	
+	public abstract boolean tieneNroTelefonico(int nro);
 	
 }
