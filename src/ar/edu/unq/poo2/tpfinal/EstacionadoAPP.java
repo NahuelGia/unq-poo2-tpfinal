@@ -6,10 +6,10 @@ public class EstacionadoAPP extends Estacionado {
 
 	private Integer nroTelefono;
 	
-	public EstacionadoAPP(String patente, LocalTime horaInicio, LocalTime horaFin, int nroTelefono) {
-		super(patente, horaInicio, horaFin);
+	public EstacionadoAPP(String patente, LocalTime horaFin, int nroTelefono) {
+		super(patente, horaFin);
 		this.setNroTelefono(nroTelefono);
-	}
+	} 
 
 	public Integer getNroTelefono() {
 		return nroTelefono;
@@ -21,8 +21,8 @@ public class EstacionadoAPP extends Estacionado {
 
 	@Override
 	public boolean tieneNroTelefonico(int nro) {
-		// TODO Auto-generated method stub
-		return false;
+	
+		return nro == this.getNroTelefono();
 	}
 
 }

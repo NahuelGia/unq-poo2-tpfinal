@@ -4,28 +4,26 @@ import java.time.LocalTime;
 
 public class EstacionadoPV extends Estacionado {
 
+	private Integer cantHoras;
 	
-	
-	public EstacionadoPV(String patente, LocalTime horaInicio, LocalTime horaFin,int cantHoras) {
-		super(patente, horaInicio, horaFin);
-		// TODO Auto-generated constructor stub
+	public EstacionadoPV(String patente, int cantHoras) {
+		super(patente, LocalTime.now().plusHours(cantHoras)); // Hace el calculo de la hora fin
+		this.setCantHoras(cantHoras);
 	}
 
 
-	public String getPatente() {
-		return null;
-		// TODO Auto-generated constructor stub
+
+	public Integer getCantHoras() {
+		return cantHoras;
 	}
 
-	
-	public int getHoras() {
-		return 0;
-		// TODO Auto-generated constructor stub
+	public void setCantHoras(Integer cantHoras) {
+		this.cantHoras = cantHoras;
 	}
+
 
 	@Override
 	public boolean tieneNroTelefonico(int nro) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

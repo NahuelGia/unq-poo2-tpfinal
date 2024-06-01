@@ -41,11 +41,11 @@ class PuntoDeVentaTest {
 
 		puntoDeVenta.registrarEstacionamiento("AAA-111", 2);
 
-		when(mockEstacionado.getHoras()).thenReturn(2);
+		when(mockEstacionado.getCantHoras()).thenReturn(2);
 		when(mockEstacionado.getPatente()).thenReturn("AAA");
 
 		verify(mockSEM).registrarEstacionamiento(
-		argThat(estacionado -> estacionado.getPatente().equals("AAA") && estacionado.getHoras() == 2));
+		argThat(estacionado -> estacionado.getPatente().equals("AAA") && estacionado.getCantHoras() == 2));
 
 	}
 

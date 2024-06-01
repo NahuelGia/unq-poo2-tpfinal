@@ -28,7 +28,7 @@ public class PuntoDeVenta {
 		LocalTime horaDeFin = horaActual.plusHours(horas);
 
 		// Creo un EstacionadoPV
-		EstacionadoPV estacionado = new EstacionadoPV(patente, horaActual, horaDeFin, horas);
+		EstacionadoPV estacionado = new EstacionadoPV(patente, horas);
 
 		// Se lo paso al SEM para que lo registre
 		this.getSEM().registrarEstacionamiento(estacionado);

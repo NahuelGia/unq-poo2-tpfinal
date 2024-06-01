@@ -10,9 +10,10 @@ public abstract class Estacionado {
 	
 	private LocalTime horaFin;
 	
-	public Estacionado(String patente, LocalTime horaInicio, LocalTime horaFin) {
+	public Estacionado(String patente, LocalTime horaFin) {
+		LocalTime horaActual = LocalTime.now();
+		this.setHoraInicio(horaActual);
 		this.setPatente(patente);
-		this.setHoraInicio(horaInicio);
 		this.setHoraFin(horaFin);
 	}
 
@@ -38,6 +39,10 @@ public abstract class Estacionado {
 
 	public void setHoraFin(LocalTime horaFin) {
 		this.horaFin = horaFin;
+	}
+	
+	public boolean tienePatente(String patente) {
+		return patente == this.getPatente();
 	}
 	
 	

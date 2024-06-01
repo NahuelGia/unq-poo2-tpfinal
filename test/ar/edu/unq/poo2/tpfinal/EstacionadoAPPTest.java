@@ -1,36 +1,56 @@
 package ar.edu.unq.poo2.tpfinal;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalTime;
 
-import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 
 public class EstacionadoAPPTest {
 
+	private MockedStatic<LocalTime> mockedLocalTime;
+
+	private EstacionadoAPP estacionadoTest;
+/*
+ * TODO: Mockear las horas de inicio 
+ * */
+	
 	@BeforeEach
 	public void setUp() {
+		LocalTime horaFin = LocalTime.of(19, 10);
+		String patente = "ABC";
+		Integer nroTelefono = 111;
+		estacionadoTest = new EstacionadoAPP(patente, horaFin, nroTelefono);
+	}
 
+	@AfterEach
+	public void tearDown() {
+		if (mockedLocalTime != null) {
+			mockedLocalTime.close();
+		}
 	}
 
 	@Test
 	public void testConstructorEstacionadoAPP() {
 
 		String patente = "ABC";
-		LocalTime horaInicio = LocalTime.of(17, 20);
+		LocalTime horaInicio = LocalTime.now();
 		LocalTime horaFin = LocalTime.of(18, 10);
 		int nroTelefono = 14151;
 
-		EstacionadoAPP estacionado = new EstacionadoAPP(patente, horaInicio, horaFin, nroTelefono);
+		EstacionadoAPP estacionado = new EstacionadoAPP(patente, horaFin, nroTelefono);
 
-		Assertions.assertEquals(patente, estacionado.getPatente());
-		Assertions.assertEquals(horaInicio, estacionado.getHoraInicio());
-		Assertions.assertEquals(horaFin, estacionado.getHoraFin());
-		Assertions.assertEquals(nroTelefono, estacionado.getNroTelefono());
+		assertEquals(patente, estacionado.getPatente());
+		assertEquals(horaInicio, estacionado.getHoraInicio());
+		assertEquals(horaFin, estacionado.getHoraFin());
+		assertEquals(nroTelefono, estacionado.getNroTelefono());
 
 	}
 
@@ -38,37 +58,89 @@ public class EstacionadoAPPTest {
 	public void unEstacionadoAPPSabeQueEstaVigente() {
 
 		LocalTime horaActualSimulada = LocalTime.of(18, 10);
-		LocalTime horaInicio = LocalTime.of(17, 20);
-		LocalTime horaFin = LocalTime.of(20, 10);
+		LocalTime horaFin = LocalTime.of(19, 10);
 		String patente = "ABC";
 		int nroTelefono = 14151;
 
-		EstacionadoAPP estacionado = new EstacionadoAPP(patente, horaInicio, horaFin, nroTelefono);
+		EstacionadoAPP estacionado = new EstacionadoAPP(patente, horaFin, nroTelefono);
 
-		mockStatic(LocalTime.class);
+		mockedLocalTime = mockStatic(LocalTime.class);
 		when(LocalTime.now()).thenReturn(horaActualSimulada);
 
 		boolean resultado = estacionado.estaVigente();
 
 		assertTrue(resultado);
+	}
+
+	@Test
+	public void unEstacionadoAPPSabeQueNoEstaVigente() {
+
+		LocalTime horaActualSimulada = LocalTime.of(19, 30);
+		LocalTime horaFin = LocalTime.of(19, 10);
+		String patente = "ABC";
+		int nroTelefono = 14151;
+
+		EstacionadoAPP estacionado = new EstacionadoAPP(patente, horaFin, nroTelefono);
+
+		mockedLocalTime = mockStatic(LocalTime.class);
+		when(LocalTime.now()).thenReturn(horaActualSimulada);
+
+		boolean resultado = estacionado.estaVigente();
+
+		assertFalse(resultado);
+	}
+
+	@Test
+	public void unEstacionadoAPPSabeQueNoEstaVigenteSiEstaSobreLaHoraDeFin() {
+
+		LocalTime horaActualSimulada = LocalTime.of(19, 30);
+		LocalTime horaFin = LocalTime.of(19, 10);
+		String patente = "ABC";
+		int nroTelefono = 14151;
+
+		EstacionadoAPP estacionado = new EstacionadoAPP(patente, horaFin, nroTelefono);
+
+		mockedLocalTime = mockStatic(LocalTime.class);
+		when(LocalTime.now()).thenReturn(horaActualSimulada);
+
+		boolean resultado = estacionado.estaVigente();
+
+		assertFalse(resultado);
+	}
+
+	@Test
+	public void unEstacionadoAPPSabeQueNoTieneLaPatenteDada() {
+
+		boolean resultado = estacionadoTest.tienePatente("A");
+
+		assertFalse(resultado);
 
 	}
 
-	/*
-	 * @Test public void unEstacionadoAPPSabeQueNoEstaVigente() {
-	 * 
-	 * mockStatic(LocalTime.class);
-	 * when(LocalTime.now()).thenReturn(LocalTime.of(18, 40));
-	 * 
-	 * String patente = "ABC" ; LocalTime horaInicio = LocalTime.of(17, 20) ;
-	 * LocalTime horaFin = LocalTime.of(18, 10) ; int nroTelefono = 14151;
-	 * 
-	 * EstacionadoAPP estacionado = new EstacionadoAPP(patente, horaInicio, horaFin,
-	 * nroTelefono);
-	 * 
-	 * Assertions.assertFalse(estacionado.estaVigente());
-	 * 
-	 * }
-	 */
+	@Test
+	public void unEstacionadoAPPSabeQueTieneLaPatenteDada() {
+
+		boolean resultado = estacionadoTest.tienePatente("ABC");
+
+		assertTrue(resultado);
+	}
+	
+	@Test
+	public void unEstacionadoAPPSabeQueNoTieneElNroTelefonicoDado() {
+		
+		boolean resultado = estacionadoTest.tieneNroTelefonico(0202);
+		
+		assertFalse(resultado);
+	}
+	
+	@Test
+	public void unEstacionadoAPPSabeQueTieneElNroTelefonicoDado() {
+		
+		boolean resultado = estacionadoTest.tieneNroTelefonico(111);
+		
+		assertTrue(resultado);
+		
+	} 
+	
 
 }
