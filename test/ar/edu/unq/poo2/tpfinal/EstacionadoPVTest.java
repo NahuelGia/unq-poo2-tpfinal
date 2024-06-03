@@ -47,7 +47,7 @@ class EstacionadoPVTest {
 		assertEquals(horaInicio, estacionado.getHoraInicio());
 		assertEquals(horaFin, estacionado.getHoraFin());
 		assertEquals(cantHoras, estacionado.getCantHoras());
-
+		
 	}
 
 	@Test

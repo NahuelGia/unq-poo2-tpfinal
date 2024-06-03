@@ -18,9 +18,7 @@ public class EstacionadoAPPTest {
 	private MockedStatic<LocalTime> mockedLocalTime;
 
 	private EstacionadoAPP estacionadoTest;
-/*
- * TODO: Mockear las horas de inicio 
- * */
+
 	
 	@BeforeEach
 	public void setUp() {
@@ -45,7 +43,7 @@ public class EstacionadoAPPTest {
 		LocalTime horaInicio = LocalTime.now();
 		LocalTime horaFin = LocalTime.of(18, 10);
 		int nroTelefono = 14151;
-		
+	
 		EstacionadoAPP estacionado = new EstacionadoAPP(patente, horaFin, nroTelefono);
 
 		assertEquals(patente, estacionado.getPatente());
