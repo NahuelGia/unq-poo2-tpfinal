@@ -39,12 +39,13 @@ public class EstacionadoAPPTest {
 
 	@Test
 	public void testConstructorEstacionadoAPP() {
-
+		
+		
 		String patente = "ABC";
 		LocalTime horaInicio = LocalTime.now();
 		LocalTime horaFin = LocalTime.of(18, 10);
 		int nroTelefono = 14151;
-
+		
 		EstacionadoAPP estacionado = new EstacionadoAPP(patente, horaFin, nroTelefono);
 
 		assertEquals(patente, estacionado.getPatente());
