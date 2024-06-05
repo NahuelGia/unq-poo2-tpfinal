@@ -7,6 +7,16 @@ public class SEM {
 		
 	}
 
+	public void cargarSaldo(int telefono, double monto) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void registrarTicket( TicketRecarga t) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 
 	

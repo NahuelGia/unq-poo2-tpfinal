@@ -1,11 +1,11 @@
 package ar.edu.unq.poo2.tpfinal;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -13,14 +13,11 @@ import org.mockito.Mockito;
 class PuntoDeVentaTest {
 
 	PuntoDeVenta puntoDeVenta;
+	PuntoDeVenta puntoSinSEM;
 	SEM mockSEM;
-	EstacionadoPV mockEstacionado;
 
 	@BeforeEach
 	void setUp() throws Exception {
-
-		// Creo un mock de la clase EstaciondoPV
-		mockEstacionado = Mockito.mock(EstacionadoPV.class);
 
 		// Creo un mock de la clase SEM
 		mockSEM = Mockito.mock(SEM.class);
@@ -31,7 +28,7 @@ class PuntoDeVentaTest {
 	}
 
 	@Test
-	void test1_UnPuntoDeVentaInicialmenteTieneUnSEMPorDefault() {
+	void test1_UnPuntoDeVentaSeInicializaConUnSEM() {
 		assertEquals(mockSEM, puntoDeVenta.getSEM());
 
 	}
@@ -41,12 +38,36 @@ class PuntoDeVentaTest {
 
 		puntoDeVenta.registrarEstacionamiento("AAA-111", 2);
 
-		when(mockEstacionado.getCantHoras()).thenReturn(2);
-		when(mockEstacionado.getPatente()).thenReturn("AAA");
-
 		verify(mockSEM).registrarEstacionamiento(
-		argThat(estacionado -> estacionado.getPatente().equals("AAA") && estacionado.getCantHoras() == 2));
+				argThat(estacionado -> estacionado.getPatente().equals("AAA-111") && estacionado.getCantHoras() == 2));
 
+	}
+
+	@Test
+	void test3_UnPuntoDeVentaPuedeCargarleSaldoAUnCliente() {
+
+		puntoDeVenta.cargarSaldo(112233, 500.00);
+
+		verify(mockSEM, times(1)).cargarSaldo(112233, 500.00);
+
+	}
+	
+	@Test
+	void test4_UnPuntoDeVentaNoPuedeCargaleSaldoNegativoAUnCliente() {
+		
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {puntoDeVenta.cargarSaldo(123456789, -50.0);});
+	
+		 assertEquals("El monto de la recarga no puede ser negativo.", exception.getMessage());
+	}
+	
+	
+
+	@Test
+	void test5_UnPuntoDeVentaPuedeGenerarUnTicketDeRecarga() {
+
+		puntoDeVenta.registrarTicketRecarga(112233, 500.00);
+
+		verify(mockSEM, times(1)).registrarTicket(argThat(ticket -> ticket.getCelular() == 112233 && ticket.getMonto() == 500.00));
 	}
 
 }
