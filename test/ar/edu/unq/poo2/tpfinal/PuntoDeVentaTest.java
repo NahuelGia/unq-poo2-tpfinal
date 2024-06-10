@@ -42,9 +42,16 @@ class PuntoDeVentaTest {
 				argThat(estacionado -> estacionado.getPatente().equals("AAA-111") && estacionado.getCantHoras() == 2));
 
 	}
+	
+	@Test
+	void test3_UnPuntoDeVentaNoPuedeRegistrarUnEstacionamientoConHorasNegativas() {
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {puntoDeVenta.registrarEstacionamiento("AAA-111", -1);});
+		
+		 assertEquals("La cantidad de horas no puede ser negativa o 0.", exception.getMessage());
+	}
 
 	@Test
-	void test3_UnPuntoDeVentaPuedeCargarleSaldoAUnCliente() {
+	void test4_UnPuntoDeVentaPuedeCargarleSaldoAUnCliente() {
 
 		puntoDeVenta.cargarSaldo(112233, 500.00);
 
@@ -53,21 +60,38 @@ class PuntoDeVentaTest {
 	}
 	
 	@Test
-	void test4_UnPuntoDeVentaNoPuedeCargaleSaldoNegativoAUnCliente() {
+	void test5_UnPuntoDeVentaNoPuedeCargaleSaldoNegativoAUnCliente() {
 		
 		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {puntoDeVenta.cargarSaldo(123456789, -50.0);});
 	
-		 assertEquals("El monto de la recarga no puede ser negativo.", exception.getMessage());
+		 assertEquals("El monto de la recarga no puede ser negativo o 0.", exception.getMessage());
 	}
 	
 	
 
 	@Test
-	void test5_UnPuntoDeVentaPuedeGenerarUnTicketDeRecarga() {
+	void test6_UnPuntoDeVentaPuedeGenerarUnTicketDeRecarga() {
 
 		puntoDeVenta.registrarTicketRecarga(112233, 500.00);
 
 		verify(mockSEM, times(1)).registrarTicket(argThat(ticket -> ticket.getCelular() == 112233 && ticket.getMonto() == 500.00));
 	}
+	
+	@Test
+	void test7_unPuntoDeVentaAsignaUnNumeroDeControlMenorA9999(){
+		puntoDeVenta.setNumeroControl(100);
+		
+		assertEquals(100,puntoDeVenta.asignarNumeroControl()); // Se asigna el numero de control actual.
+		assertEquals(101,puntoDeVenta.asignarNumeroControl()); // Se asigna el nunero de control que sigue.
+		
+	}
 
+	@Test
+	void test8_UnPuntoDeVentaReseteaSuNumeroDeControlAlLlegarA10000(){
+		puntoDeVenta.setNumeroControl(10000);
+		
+		assertEquals(0,puntoDeVenta.asignarNumeroControl());
+	}
+	
+	
 }
