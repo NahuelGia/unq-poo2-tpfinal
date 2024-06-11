@@ -15,12 +15,12 @@ public class TicketRecarga extends Ticket {
 		
 	}
 
-	private void setMonto(double monto) {
+	public void setMonto(double monto) {
 		this.monto = monto;
 
 	}
 
-	private void setCelular(int celular) {
+	public void setCelular(int celular) {
 		this.celular = celular;
 
 	}
