@@ -1,0 +1,103 @@
+package ar.edu.unq.poo2.tpfinal;
+
+public class AppSEM {
+	/*
+	 * La app genera el estacionado
+	 * Tiene un state
+	 * Tiene un strategy
+	 */
+	
+	private int nroTelefono;
+	private Double saldo;
+	private EstadoEstacionamiento estado;
+	private ModoEstacionamiento modo;
+	private SEM sistema;
+	// TODO implementar el MovementSensor
+	
+	
+	public AppSEM(int nroTel, SEM sist) {
+		setNroTelefono(nroTel);
+		setSaldo(0.0);
+		setEstado(new NoVigente());
+		setModo(new Manual()); 
+		setSistema(sist);
+	}
+
+
+	public int getNroTelefono() {
+		return nroTelefono;
+	}
+
+
+	public void setNroTelefono(int nroTelefono) {
+		this.nroTelefono = nroTelefono;
+	}
+
+
+	public Double getSaldo() {
+		return saldo;
+	}
+
+
+	public void setSaldo(Double saldo) {
+		this.saldo = saldo;
+	}
+
+
+	public EstadoEstacionamiento getEstado() {
+		return estado;
+	}
+
+
+	public void setEstado(EstadoEstacionamiento estado) {
+		this.estado = estado;
+	}
+
+
+	public ModoEstacionamiento getModo() {
+		return modo;
+	}
+
+
+	private void setModo(ModoEstacionamiento modo) {
+		this.modo = modo;
+	}
+
+
+	public SEM getSistema() {
+		return sistema;
+	}
+
+
+	private void setSistema(SEM sistema) {
+		this.sistema = sistema;
+	}
+	
+	public void aumentarSaldo(Double monto) { 
+		// Como el punto de venta chequea que el monto no sea negativo, acá ya no es necesario.
+		setSaldo(getSaldo() + monto);
+	}
+	
+	public void iniciarEstacionamiento(String patente){
+	    estado.iniciar(this, patente);
+	}
+
+	public void finalizarEstacionamiento(){
+	    estado.finalizar(this);
+	}
+	
+	public void posibleInicioEstacionamiento(){
+	    estado.inicioNotificado(this);
+	}
+	
+	public void posibleFinEstacionamiento(){
+	    estado.finNotificado(this);
+	}
+	
+	public void activarNotificaciones() {
+
+	}
+	
+	
+	
+}

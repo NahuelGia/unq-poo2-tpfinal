@@ -53,7 +53,7 @@ class EstacionadoPVTest {
 	@Test
 	public void unEstacionadoPVSabeQueEstaVigente() {
 
-		String patente = "ABC";
+	    String patente = "ABC";
 		int cantHoras = 3;
 
 		EstacionadoPV estacionado = new EstacionadoPV(patente, cantHoras);
@@ -96,6 +96,7 @@ class EstacionadoPVTest {
 		EstacionadoPV estacionado = new EstacionadoPV(patente, cantHoras);
 
 		mockedLocalTime = mockStatic(LocalTime.class);
+		
 		when(LocalTime.now()).thenReturn(horaActualSimulada);
 
 		boolean resultado = estacionado.estaVigente();
