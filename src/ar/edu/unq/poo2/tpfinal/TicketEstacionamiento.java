@@ -7,13 +7,8 @@ public class TicketEstacionamiento extends Ticket {
 
 	private int cantHoras;
 
-	public TicketEstacionamiento(int numeroControl, PuntoDeVenta pv, LocalDate fechaActual, LocalTime horaActual,
-			int cantHoras) {
-
-		this.setNroDeControl(numeroControl);
-		this.setPuntoDeVenta(pv);
-		this.setFecha(fechaActual);
-		this.setHora(horaActual);
+	public TicketEstacionamiento(int numeroControl, PuntoDeVenta puntoDeVenta, LocalDate fechaActual, LocalTime horaActual,int cantHoras) {
+		super(numeroControl, puntoDeVenta, fechaActual, horaActual);
 		this.setCantHoras(cantHoras);
 
 	}

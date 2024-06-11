@@ -5,10 +5,19 @@ import java.time.LocalTime;
 
 public abstract class Ticket {
 
-	private PuntoDeVenta puntoDeVenta;
 	private int nroDeControl;
+	private PuntoDeVenta puntoDeVenta;
 	private LocalDate fecha;
 	private LocalTime hora;
+	
+	public Ticket(int nroControl,PuntoDeVenta puntoDeVenta, LocalDate fecha, LocalTime hora) {
+		
+		this.nroDeControl = nroControl;
+		this.puntoDeVenta =	puntoDeVenta;
+		this.fecha = 		fecha;
+		this.hora  = 		hora;
+	
+	}
 
 	public int getNroDeControl() {
 		return nroDeControl;

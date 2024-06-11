@@ -8,14 +8,11 @@ public class TicketRecarga extends Ticket {
 	private double monto;
 	private int celular;
 
-	public TicketRecarga(int nroControl, PuntoDeVenta puntoDeVenta, LocalDate fechaActual, LocalTime horaActual,
-			double monto, int celular) {
-		this.setCelular(celular);
+	public TicketRecarga(int nroControl, PuntoDeVenta puntoDeVenta, LocalDate fechaActual, LocalTime horaActual,double monto, int celular) {
+		super(nroControl, puntoDeVenta, fechaActual, horaActual);
 		this.setMonto(monto);
-		this.setNroDeControl(nroControl);
-		this.setPuntoDeVenta(puntoDeVenta);
-		this.setFecha(fechaActual);
-		this.setHora(horaActual);
+		this.setCelular(celular);
+		
 	}
 
 	private void setMonto(double monto) {
