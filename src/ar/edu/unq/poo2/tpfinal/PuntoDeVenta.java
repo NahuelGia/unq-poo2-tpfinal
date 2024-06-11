@@ -10,11 +10,11 @@ public class PuntoDeVenta {
 
 	public PuntoDeVenta(SEM sem) {
 
-		this.setSet(sem);
+		this.setSEM(sem);
 		this.numeroControl = 0;
 	}
 
-	public void setSet(SEM sem) {
+	public void setSEM(SEM sem) {
 		this.sem = sem;
 	}
 
@@ -31,7 +31,7 @@ public class PuntoDeVenta {
 	}
 
 	public void registrarEstacionamiento(String patente, int horas) {
-		
+
 		if (horas <= 0) {
 			throw new IllegalArgumentException("La cantidad de horas no puede ser negativa o 0.");
 		}
@@ -41,6 +41,20 @@ public class PuntoDeVenta {
 
 		// Se lo paso al SEM para que lo registre
 		this.getSEM().registrarEstacionamiento(estacionado);
+		this.registrarTicketEstacionamiento(horas);
+
+	}
+
+	public void registrarTicketEstacionamiento(int horas) {
+
+		LocalDate fechaActual = LocalDate.now();
+
+		LocalTime horaActual = LocalTime.now();
+
+		TicketEstacionamiento ticket = new TicketEstacionamiento(this.asignarNumeroControl(), this, fechaActual,
+				horaActual, horas);
+
+		this.getSEM().registrarTicket(ticket);
 
 	}
 
@@ -55,31 +69,31 @@ public class PuntoDeVenta {
 
 	}
 
+	
 	public void registrarTicketRecarga(int telefono, double monto) {
 
 		LocalDate fechaActual = LocalDate.now();
-		
-		LocalTime horaActual  = LocalTime.now();
 
-		TicketRecarga ticket = new TicketRecarga(this.asignarNumeroControl(), this, fechaActual, horaActual, monto,telefono);
+		LocalTime horaActual = LocalTime.now();
 
-		getSEM().registrarTicket(ticket);
+		TicketRecarga ticket = new TicketRecarga(this.asignarNumeroControl(), this, fechaActual, horaActual, monto,
+				telefono);
+
+		this.getSEM().registrarTicket(ticket);
 
 	}
 
 	public int asignarNumeroControl() {
 
 		if (this.getNumeroControl() < 9999) {
-		
+
 			int numeroActual = this.getNumeroControl();
-			this.setNumeroControl(numeroActual+1);
+			this.setNumeroControl(numeroActual + 1);
 			return numeroActual;
 
 		}
 		this.setNumeroControl(0);
 		return this.getNumeroControl();
-		
-		
 
 	}
 
