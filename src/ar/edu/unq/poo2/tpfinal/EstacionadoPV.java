@@ -4,16 +4,16 @@ import java.time.LocalTime;
 
 public class EstacionadoPV extends Estacionado {
 
-	private Integer cantHoras;
+	private int cantHoras;
 	
 	public EstacionadoPV(String patente, int cantHoras) {
-		super(patente, LocalTime.now().plusHours(cantHoras)); // Hace el calculo de la hora fin
+	    super(patente, LocalTime.now().plusHours(cantHoras)); // Hace el calculo de la hora fin
 		this.setCantHoras(cantHoras);
 	}
 
 
 
-	public Integer getCantHoras() {
+	public int getCantHoras() {
 		return cantHoras;
 	}
 

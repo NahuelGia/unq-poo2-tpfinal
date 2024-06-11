@@ -38,13 +38,16 @@ class PuntoDeVentaTest {
 
 		puntoDeVenta.registrarEstacionamiento("AAA-111", 2);
 
-		verify(mockSEM).registrarEstacionamiento(
-				argThat(estacionado -> estacionado.getPatente().equals("AAA-111") && estacionado.getCantHoras() == 2));
+		verify(mockSEM).registrarEstacionamiento(argThat(estacionado -> estacionado.getCantHoras() == 2));
+		
+		verify(mockSEM).registrarEstacionamiento(argThat(estacionado -> estacionado.getPatente().equals("AAA-111")));
 
 	}
 	
 	@Test
 	void test3_UnPuntoDeVentaNoPuedeRegistrarUnEstacionamientoConHorasNegativas() {
+		
+		
 		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {puntoDeVenta.registrarEstacionamiento("AAA-111", -1);});
 		
 		 assertEquals("La cantidad de horas no puede ser negativa o 0.", exception.getMessage());
@@ -73,7 +76,7 @@ class PuntoDeVentaTest {
 	void test6_UnPuntoDeVentaPuedeGenerarUnTicketDeRecarga() {
 
 		puntoDeVenta.registrarTicketRecarga(112233, 500.00);
-
+		
 		verify(mockSEM, times(1)).registrarTicket(argThat(ticket -> ticket.getCelular() == 112233 && ticket.getMonto() == 500.00));
 	}
 	
