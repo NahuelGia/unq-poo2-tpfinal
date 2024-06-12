@@ -38,7 +38,7 @@ class PuntoDeVentaTest {
 
 		puntoDeVenta.registrarEstacionamiento("AAA-111", 2);
 
-		verify(mockSEM).registrarEstacionamiento(argThat(estacionado -> estacionado.getCantHoras() == 2));
+		verify(mockSEM).registrarEstacionamiento(argThat(estacionado -> ((EstacionadoPV) estacionado).getCantHoras() == 2));
 
 		verify(mockSEM).registrarEstacionamiento(argThat(estacionado -> estacionado.getPatente().equals("AAA-111")));
 
@@ -66,8 +66,7 @@ class PuntoDeVentaTest {
 	@Test
 	void test5_UnPuntoDeVentaNoPuedeCargaleSaldoNegativoAUnCliente() {
 
-		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-			puntoDeVenta.cargarSaldo(123456789, -50.0);
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {puntoDeVenta.cargarSaldo(123456789, -50.0);
 		});
 
 		assertEquals("El monto de la recarga no puede ser negativo o 0.", exception.getMessage());
@@ -97,13 +96,14 @@ class PuntoDeVentaTest {
 
 		assertEquals(0, puntoDeVenta.asignarNumeroControl());
 	}
-	
+
 	@Test
 	void test9_UnPuntoDeVentaPuedeGenerarUnTicketDeEstacionamientoYSuSEMLoRecibe() {
 		puntoDeVenta.registrarTicketEstacionamiento(6);
-		
-		verify(mockSEM, times(1)).registrarTicket(argThat(ticket -> ((TicketEstacionamiento) ticket).getCantHoras() == 6));
-		
+
+		verify(mockSEM, times(1))
+				.registrarTicket(argThat(ticket -> ((TicketEstacionamiento) ticket).getCantHoras() == 6));
+
 	}
 
 }

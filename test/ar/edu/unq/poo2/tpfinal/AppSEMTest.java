@@ -34,6 +34,7 @@ public class AppSEMTest {
 		assertTrue(app.getEstado() instanceof NoVigente);
 		assertTrue(app.getModo() instanceof Manual); 
 		assertEquals(semMock, app.getSistema());
+		verify(semMock,times(1)).registrarUsuario(app);
 	}
 	
 	@Test
