@@ -12,10 +12,10 @@ public abstract class Ticket {
 	
 	public Ticket(int nroControl,PuntoDeVenta puntoDeVenta, LocalDate fecha, LocalTime hora) {
 		
-		this.nroDeControl = nroControl;
-		this.puntoDeVenta =	puntoDeVenta;
-		this.fecha = 		fecha;
-		this.hora  = 		hora;
+		this.setNroDeControl(nroControl);;
+		this.setPuntoDeVenta(puntoDeVenta);;
+		this.setFecha(fecha);
+		this.setHora(hora);
 	
 	}
 
