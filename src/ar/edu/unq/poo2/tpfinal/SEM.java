@@ -12,9 +12,14 @@ public class SEM {
 		
 	}
 
-	public void registrarTicket( TicketRecarga t) {
+	public void registrarTicket( Ticket t) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public Double getPrecioPorHora() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

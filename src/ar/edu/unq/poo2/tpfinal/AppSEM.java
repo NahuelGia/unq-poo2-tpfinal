@@ -59,7 +59,7 @@ public class AppSEM {
 	}
 
 
-	private void setModo(ModoEstacionamiento modo) {
+	public void setModo(ModoEstacionamiento modo) {
 		this.modo = modo;
 	}
 
@@ -69,7 +69,7 @@ public class AppSEM {
 	}
 
 
-	private void setSistema(SEM sistema) {
+	public void setSistema(SEM sistema) {
 		this.sistema = sistema;
 	}
 	
@@ -95,9 +95,24 @@ public class AppSEM {
 	}
 	
 	public void activarNotificaciones() {
-
+		getModo().setNotifActiva(true);
 	}
 	
+	public void desactivarNotificaciones() {
+		getModo().setNotifActiva(false);
+	}
+
+	public void notificarPosibleInicio() {
+		System.out.print("Recuerde iniciar su estacionamiento");
+	}
 	
+
+	public void notificarPosibleFin() {
+		System.out.print("Recuerde finalizar su estacionamiento");
+	}
+	
+	public boolean tieneSaldoMinimo() {
+		return getSaldo() >= getSistema().getPrecioPorHora();
+	}
 	
 }

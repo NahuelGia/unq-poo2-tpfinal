@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -95,6 +96,62 @@ public class AppSEMTest {
 	    verify(estadoMock).finNotificado(appTest);
 	}
 	
+	@Test
+	public void unaAppSEMPuedeActivarLasNotificacionesDeEstacionamiento() {
+		Manual modoMock = mock(Manual.class);
+		
+		appTest.setModo(modoMock);
+		
+		appTest.activarNotificaciones();
+		
+		verify(modoMock).setNotifActiva(true);
+	}
 	
+	@Test
+	public void unaAppSEMPuedeDesactivarLasNotificacionesDeEstacionamiento() {
+		Manual modoMock = mock(Manual.class);
+		
+		appTest.setModo(modoMock);
+		
+		appTest.desactivarNotificaciones();
+		
+		verify(modoMock).setNotifActiva(false);
+	}
+	
+	@Test
+	public void unaAppSEMPuedeNotificarUnPosibleInicioDeEstacionamiento() {
+		// TODO
+	}
+	
+	@Test
+	public void unaAppSEMPuedeNotificarUnPosibleFinDeEstacionamiento() {
+		// TODO
+	}
+	
+	public void unaAppSEMSabeQueNoTieneElSaldoMinimoParaRealizarUnEstacionamiento() {
+		SEM sistemaMock = mock(SEM.class);
+		
+		appTest.setSistema(sistemaMock);
+		
+		when(sistemaMock.getPrecioPorHora()).thenReturn(40.0);
+		
+		boolean resultado = appTest.tieneSaldoMinimo() ;
+		
+		assertFalse(resultado);
+	}
+	
+	
+	public void unaAppSEMSabeQueTieneElSaldoMinimoParaRealizarUnEstacionamiento() {
+		SEM sistemaMock = mock(SEM.class);
+		
+		appTest.aumentarSaldo(40.0);
+		appTest.setSistema(sistemaMock);
+		
+		when(sistemaMock.getPrecioPorHora()).thenReturn(40.0);
+		
+		boolean resultado = appTest.tieneSaldoMinimo() ;
+		
+		assertTrue(resultado);
+	}
 	
 }
