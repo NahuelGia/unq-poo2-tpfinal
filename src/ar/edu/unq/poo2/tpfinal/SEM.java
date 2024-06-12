@@ -22,6 +22,13 @@ public class SEM {
 		return null;
 	}
 
+	public void finalizarEstacionamiento(AppSEM appSEM) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+
 	
 
 	

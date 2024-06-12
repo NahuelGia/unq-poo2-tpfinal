@@ -114,5 +114,11 @@ public class AppSEM {
 	public boolean tieneSaldoMinimo() {
 		return getSaldo() >= getSistema().getPrecioPorHora();
 	}
+
+
+	public boolean estaEnZonaEstacionamiento() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }
