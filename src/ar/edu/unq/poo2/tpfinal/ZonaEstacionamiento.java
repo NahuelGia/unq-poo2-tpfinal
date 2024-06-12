@@ -28,4 +28,10 @@ public void registrarPuntoDeVenta(PuntoDeVenta punto) {
 public ArrayList<PuntoDeVenta> getPvs() {
 	return this.puntosDeVenta;
 }
+
+
+public void removerPuntoDeVenta(PuntoDeVenta punto) {
+	this.puntosDeVenta.remove(punto);
+	
+}
 }

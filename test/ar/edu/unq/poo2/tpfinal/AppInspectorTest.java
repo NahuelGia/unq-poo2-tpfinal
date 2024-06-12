@@ -13,13 +13,13 @@ import static org.mockito.Mockito.*;
 		
 		private ZonaEstacionamiento estacionamiento;
 		private SEM sem;
-		private Inspector inspector;
+		private AppInspector inspector;
 		
 		@BeforeEach
 		public void setUp() {
 			this.sem = mock(SEM.class);
 			this.estacionamiento= mock(ZonaEstacionamiento.class);
-			this.inspector = new Inspector(sem,estacionamiento);//SUT
+			this.inspector = new AppInspector(sem,estacionamiento);//SUT
 			
 			
 		}
@@ -57,6 +57,12 @@ import static org.mockito.Mockito.*;
 			when(this.inspector.getSem().consultarVigencia("patente")).thenReturn(true);
 			this.inspector.consultarVigencia("patente");
 			verify(this.inspector.getSem(),atLeast(0)).consultarVigencia("patente");
+		}
+		@Test
+		void test030laAppInspectorPuedeCambiarDeSem() {
+			SEM sem2=mock(SEM.class);
+			this.inspector.setSem(sem2);
+			assertEquals(sem2,((this.inspector).getSem()));
 		}
 			
 	}

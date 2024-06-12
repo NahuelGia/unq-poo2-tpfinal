@@ -1,10 +1,13 @@
 package ar.edu.unq.poo2.tpfinal;
 
-public class Inspector {
+
+import java.time.LocalDateTime;
+
+public class AppInspector {
 	private SEM sem;
 	public ZonaEstacionamiento estacionamiento;
 	
-	public Inspector(SEM sem,ZonaEstacionamiento estacionamiento) {
+	public AppInspector(SEM sem,ZonaEstacionamiento estacionamiento) {
 		this.sem=sem;;
 		this.estacionamiento =estacionamiento;
 	}
@@ -25,13 +28,17 @@ public class Inspector {
 	public boolean consultarVigencia(String patente) {
 		boolean esVigente = this.sem.consultarVigencia(patente);
 		if (! esVigente) {
-			this.labrarInfraccion(patente);
+			this.labrarInfraccion(new Infraccion(this, LocalDateTime.now(),patente,this.estacionamiento));
 		}
 		return esVigente;
 		
 	}
- public void labrarInfraccion(String patente) {
-	this.sem.registrarInfraccion(patente);
+ public void labrarInfraccion(Infraccion infraccion) {
+	this.sem.registrarInfraccion(infraccion);
+	
+}
+public void setSem(SEM sem) {
+	this.sem=sem;
 	
 }
 }
