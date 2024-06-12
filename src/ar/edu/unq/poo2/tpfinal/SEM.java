@@ -32,6 +32,16 @@ public class SEM {
 		
 	}
 
+	public void registrarInfraccion(Infraccion infraccion) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean consultarVigencia(String patente) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	
 
 	

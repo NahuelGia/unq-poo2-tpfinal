@@ -175,7 +175,7 @@ public class AppSEMTest {
 	}
 	
 	@Test
-	public void unaAppSEMQueNoSeEncuentraWalkingAlCambiarADrivingNotificaElPosibleFin() {
+	public void unaAppSEMQueNoSeEncuentraWalkingAlRecibirDrivingNoHaceNada() {
 		appTest.setWalking(false);
 		
 		Vigente estadoMock = mock(Vigente.class);
@@ -184,8 +184,34 @@ public class AppSEMTest {
 		
 		appTest.driving();
 		
-		verify(estadoMock).finNotificado(appTest);
+		verifyNoInteractions(estadoMock);
 		
+	}
+	
+	@Test
+	public void unaAppSEMQueNoSeEncuentraWalkingAlCambiarAWalkingNotificaElPosibleInicio() {
+		appTest.setWalking(false);
+		
+		Vigente estadoMock = mock(Vigente.class);
+		
+	    appTest.setEstado(estadoMock);
+		
+		appTest.walking();
+		
+		verify(estadoMock).inicioNotificado(appTest);
+	}
+	
+	@Test
+	public void unaAppSEMQueSeEncuentraWalkingAlRecibirWalkingNoHaceNada() {
+		appTest.setWalking(true);
+		
+		Vigente estadoMock = mock(Vigente.class);
+		
+		appTest.setEstado(estadoMock);
+		
+		appTest.walking();
+		
+		verifyNoInteractions(estadoMock);	
 	}
 	
 	

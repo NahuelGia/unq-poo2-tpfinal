@@ -137,7 +137,7 @@ public class AppSEM implements MovementSensor {
 	public void driving() {
 		if (isWalking()) {
 			posibleFinEstacionamiento();
-			setWalking(false);
+		    setWalking(false);
 		}
 	}
 
