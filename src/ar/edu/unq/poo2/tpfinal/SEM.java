@@ -27,6 +27,11 @@ public class SEM {
 		
 	}
 
+	public void estacionamientoIniciado(AppSEM appSEM, String patente) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 
 	

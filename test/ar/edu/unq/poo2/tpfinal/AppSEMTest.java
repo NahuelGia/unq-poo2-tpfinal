@@ -133,7 +133,7 @@ public class AppSEMTest {
 		// TODO
 	}
 	
-	
+	@Test
 	public void unaAppSEMSabeQueNoTieneElSaldoMinimoParaRealizarUnEstacionamiento() {
 		SEM sistemaMock = mock(SEM.class);
 		
@@ -146,7 +146,7 @@ public class AppSEMTest {
 		assertFalse(resultado);
 	}
 	
-	
+	@Test
 	public void unaAppSEMSabeQueTieneElSaldoMinimoParaRealizarUnEstacionamiento() {
 		SEM sistemaMock = mock(SEM.class);
 		
@@ -159,5 +159,35 @@ public class AppSEMTest {
 		
 		assertTrue(resultado);
 	}
+	
+	@Test
+	public void unaAppSEMQueSeEncuentraWalkingAlCambiarADrivingNotificaElPosibleFin() {
+		appTest.setWalking(true);
+		
+		Vigente estadoMock = mock(Vigente.class);
+		
+		appTest.setEstado(estadoMock);
+		
+		appTest.driving();
+		
+		verify(estadoMock).finNotificado(appTest);
+		
+	}
+	
+	@Test
+	public void unaAppSEMQueNoSeEncuentraWalkingAlCambiarADrivingNotificaElPosibleFin() {
+		appTest.setWalking(false);
+		
+		Vigente estadoMock = mock(Vigente.class);
+		
+		appTest.setEstado(estadoMock);
+		
+		appTest.driving();
+		
+		verify(estadoMock).finNotificado(appTest);
+		
+	}
+	
+	
 	
 }

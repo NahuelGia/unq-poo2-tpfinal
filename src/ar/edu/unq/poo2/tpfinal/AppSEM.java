@@ -1,6 +1,6 @@
 package ar.edu.unq.poo2.tpfinal;
 
-public class AppSEM {
+public class AppSEM implements MovementSensor {
 	/*
 	 * La app genera el estacionado
 	 * Tiene un state
@@ -12,7 +12,7 @@ public class AppSEM {
 	private EstadoEstacionamiento estado;
 	private ModoEstacionamiento modo;
 	private SEM sistema;
-	// TODO implementar el MovementSensor
+	private boolean walking;
 	
 	
 	public AppSEM(int nroTel, SEM sist) {
@@ -21,6 +21,7 @@ public class AppSEM {
 		setEstado(new NoVigente());
 		setModo(new Manual()); 
 		setSistema(sist);
+		setWalking(false);
 	}
 
 
@@ -73,6 +74,15 @@ public class AppSEM {
 		this.sistema = sistema;
 	}
 	
+	public boolean isWalking() {
+		return walking;
+	}
+
+
+	public void setWalking(boolean walking) {
+		this.walking = walking;
+	}
+
 	public void aumentarSaldo(Double monto) { 
 		// Como el punto de venta chequea que el monto no sea negativo, acá ya no es necesario.
 		setSaldo(getSaldo() + monto);
@@ -106,7 +116,6 @@ public class AppSEM {
 		System.out.print("Recuerde iniciar su estacionamiento");
 	}
 	
-
 	public void notificarPosibleFin() {
 		System.out.print("Recuerde finalizar su estacionamiento");
 	}
@@ -115,16 +124,28 @@ public class AppSEM {
 		return getSaldo() >= getSistema().getPrecioPorHora();
 	}
 
-
 	public boolean estaEnZonaEstacionamiento() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-
 	public void notificarSaldoInsuficiente() {
 		System.out.print("El saldo es insuficiente");
 		
+	}
+
+	public void driving() {
+		if (isWalking()) {
+			posibleFinEstacionamiento();
+			setWalking(false);
+		}
+	}
+
+	public void walking() {
+		if (!isWalking()) {
+			posibleInicioEstacionamiento();
+			setWalking(true);
+		} 
 	}
 	
 }
