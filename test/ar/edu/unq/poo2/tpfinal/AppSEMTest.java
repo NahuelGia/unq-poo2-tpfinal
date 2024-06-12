@@ -128,6 +128,12 @@ public class AppSEMTest {
 		// TODO
 	}
 	
+	@Test
+	public void unaAppSEMPuedeNotificarQueTieneSaldoInsuficiente() {
+		// TODO
+	}
+	
+	
 	public void unaAppSEMSabeQueNoTieneElSaldoMinimoParaRealizarUnEstacionamiento() {
 		SEM sistemaMock = mock(SEM.class);
 		

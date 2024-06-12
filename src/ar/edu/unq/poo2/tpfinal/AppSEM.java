@@ -120,5 +120,11 @@ public class AppSEM {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+
+	public void notificarSaldoInsuficiente() {
+		System.out.print("El saldo es insuficiente");
+		
+	}
 	
 }
