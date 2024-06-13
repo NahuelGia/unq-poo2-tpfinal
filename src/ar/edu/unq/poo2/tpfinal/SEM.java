@@ -20,7 +20,7 @@ public class SEM {
 		this.setInicioFranjaHoraria(LocalTime.of(7, 0));
 		this.setFinFranjaHoraria(LocalTime.of(20, 0));
 		this.setSuscriptores(new ArrayList<SistemaMonitoreo>());
-		
+
 	}
 
 	private void setFinFranjaHoraria(LocalTime horaFin) {
@@ -41,7 +41,6 @@ public class SEM {
 	public LocalTime getfinFranjaHoraria() {
 		return finFranjaHoraria;
 	}
-
 
 	public List<Estacionado> getEstacionados() {
 		return estacionados;
@@ -74,8 +73,8 @@ public class SEM {
 	private void setSuscriptores(List<SistemaMonitoreo> suscriptores) {
 		this.suscriptores = suscriptores;
 	}
-	
-	public void registrarSuscriptor(SistemaMonitoreo suscriptor) {
+
+	public void suscribirA(SistemaMonitoreo suscriptor) {
 		this.getSuscriptores().add(suscriptor);
 	}
 
@@ -84,15 +83,13 @@ public class SEM {
 	}
 
 	public void cargarSaldo(int telefono, double monto) {
-		// TODO testear
-		Optional<AppSEM> usuario = getUsuarios().stream()
-					                            .filter(a -> a.tieneNumero(telefono))
-					                            .findFirst() ;
-		
-		if(usuario.isPresent()) {
+
+		Optional<AppSEM> usuario = getUsuarios().stream().filter(app -> app.tieneNumero(telefono)).findFirst();
+
+		if (usuario.isPresent()) {
 			usuario.get().aumentarSaldo(monto);
 		} else {
-		  throw new IllegalArgumentException("El nro de telefono no existe");
+			throw new IllegalArgumentException("El nro de telefono no existe");
 		}
 	}
 
@@ -102,62 +99,56 @@ public class SEM {
 	}
 
 	public void finalizarEstacionamiento(AppSEM app) {
-		// TODO Hacer tests
-		int nro = app.getNroTelefono() ;
-		
-		Estacionado estacionado = getEstacionados().stream()
-												   .filter(e -> e.tieneNroTelefonico(nro))
-												   .findFirst().get();
-		
+
+		int nro = app.getNroTelefono();
+
+		Estacionado estacionado = getEstacionados().stream().filter(e -> e.tieneNroTelefonico(nro)).findFirst().get();
+
 		// Se que si o si hay un estacionado gracias a los estado de la app
 		if (estacionado.estaVigente()) {
 			estacionado.finalizar();
-		} 
-		
+		}
+
 		LocalTime horaInicio = estacionado.getHoraInicio();
-	    
+
 		LocalTime horaFin = estacionado.getHoraFin();
-		
-	    int duracion = horaFin.getHour() - horaInicio.getHour();
-	    
-	    Double costo = duracion * getPrecioPorHora();
-	    
-	    app.NotificaFinEstacionamiento(horaInicio, horaFin, duracion, costo  );
-		
-		notificarFinASuscriptores((EstacionadoAPP)estacionado);// Se que voy a conseguir un EstacionadoAPP
+
+		int duracion = horaFin.getHour() - horaInicio.getHour();
+
+		Double costo = duracion * getPrecioPorHora();
+
+		app.notificarFinEstacionamiento(horaInicio, horaFin, duracion, costo);
+
+		notificarFinASuscriptores((EstacionadoAPP) estacionado);// Se que voy a conseguir un EstacionadoAPP
 	}
 
 	private void notificarFinASuscriptores(EstacionadoAPP estacionado) {
-		// TODO Escribir los tests
-		getSuscriptores().stream()
-		 .forEach(s -> s.updateFinEstacionamiento(this, estacionado));
+
+		getSuscriptores().stream().forEach(s -> s.updateFinEstacionamiento(this, estacionado));
 	}
 
 	public void estacionamientoIniciado(AppSEM appSEM, String patente) {
-		
+
 		double horasPagables = (appSEM.getSaldo() / this.getPrecioPorHora());
 		LocalTime horaActual = LocalTime.now();
 		LocalTime horaMaxima = horaActual.plusHours((long) horasPagables);
-		
-		
+
 		int intHoraFin = Math.min(this.getfinFranjaHoraria().getHour(), horaMaxima.getHour());
-		
+
 		LocalTime horaFin = LocalTime.of(intHoraFin, 0);
-		
-		
+
 		EstacionadoAPP nuevoEstacionado = new EstacionadoAPP(patente, horaFin, appSEM.getNroTelefono());
-		
+
 		this.registrarEstacionamiento(nuevoEstacionado);
 		appSEM.notificarEstacionamientoExitoso(horaActual, horaFin);
-		
+
 		notificarInicioASuscriptores(nuevoEstacionado);
 
 	}
 
 	private void notificarInicioASuscriptores(EstacionadoAPP nuevoEstacionado) {
 		// TODO Escribir test
-		getSuscriptores().stream()
-						 .forEach(s -> s.updateInicioEstacionamiento(this, nuevoEstacionado));
+		getSuscriptores().stream().forEach(s -> s.updateInicioEstacionamiento(this, nuevoEstacionado));
 	}
 
 	public void liberarEstacionados() {
@@ -187,10 +178,27 @@ public class SEM {
 	public boolean consultarVigencia(String patente) {
 		// TODO Hacer tests
 		Optional<Estacionado> estacionado = getEstacionados().stream()
-						                                     .filter(e -> e.tienePatente(patente) && e.estaVigente())
-						                                     .findFirst();
-		
+				.filter(e -> e.tienePatente(patente) && e.estaVigente()).findFirst();
+
 		return estacionado.isPresent();
 	}
-	
+
+	public void desuscribirA(SistemaMonitoreo sist) {
+		this.getSuscriptores().remove(sist);
+
+	}
+
+	public void finalizarTodosLosEstacionamientosVigentes() {
+		// TODO testear
+		if (laFranjaHorariaFinalizo()) {
+			getUsuarios().stream().forEach(a -> a.finalizarEstacionamiento());
+		}
+	}
+
+	private boolean laFranjaHorariaFinalizo() {
+		// TODO testear
+		LocalTime horaActual = LocalTime.now();
+		return horaActual.isAfter(getfinFranjaHoraria()) && horaActual.isBefore(getfinFranjaHoraria());
+	}
+
 }

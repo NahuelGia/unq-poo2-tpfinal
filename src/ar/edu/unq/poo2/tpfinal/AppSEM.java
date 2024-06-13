@@ -108,8 +108,8 @@ public class AppSEM implements MovementSensor {
 	}
 
 	public boolean estaEnZonaEstacionamiento() {
-		// Asumimos que mediante el gps puede responder la pregunta 
-		return false;
+		// Asumimos que mediante el gps puede responder la pregunta
+		return true;
 	}
 
 	public void notificarSaldoInsuficiente() {
@@ -118,9 +118,8 @@ public class AppSEM implements MovementSensor {
 	}
 
 	public void notificarEstacionamientoExitoso(LocalTime horaInicio, LocalTime horaFin) {
-		System.out.print("El estacionamiento se ha iniciado con éxito. "
-                       + "La hora de inicio es:" + horaInicio.toString()
-                       + "La hora máxima de fin posible:" + horaFin.toString());
+		System.out.print("El estacionamiento se ha iniciado con éxito. " + "La hora de inicio es:"
+				+ horaInicio.toString() + "La hora máxima de fin posible:" + horaFin.toString());
 
 	}
 
@@ -146,13 +145,17 @@ public class AppSEM implements MovementSensor {
 		}
 	}
 
-	public void NotificaFinEstacionamiento(LocalTime horaInicio, LocalTime horaFin, int duracion, Double costo) {
-		// TODO Hacer el print con lo que se pide en el tp
+	public void notificarFinEstacionamiento(LocalTime horaInicio, LocalTime horaFin, Integer duracion, Double costo) {
+
+		System.out.print(
+				"El estacionamiento se ha finalizado con exito." + "La hora de inicio fue: " + horaInicio.toString()
+						+ "La hora de fin fue: " + horaFin.toString() + "La duracion del estacionamiento fue: "
+						+ duracion.toString() + "El costo fue de: " + costo.toString());
+
 	}
-	
+
 	public boolean tieneNumero(int nro) {
-		// TODO testear
-		return getNroTelefono() == nro ;
+		return getNroTelefono() == nro;
 	}
 
 }
