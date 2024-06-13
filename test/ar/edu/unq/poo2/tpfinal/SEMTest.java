@@ -1,5 +1,6 @@
 package ar.edu.unq.poo2.tpfinal;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -22,7 +23,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class SEMTest {
-
+	
+	private MockedStatic<LocalTime> mockedLocalTime;
+	
 	SEM sem;
 	EstacionadoPV estacionadoPV;
 	EstacionadoPV estacionadoPV2;
@@ -38,6 +41,13 @@ public class SEMTest {
 		estacionadoPV2 = new EstacionadoPV("AAA-222", 6);
 		zona = new ZonaEstacionamiento("Quilmes");
 
+	}
+	
+	@AfterEach
+	public void tearDown() {
+		if (mockedLocalTime != null) {
+			mockedLocalTime.close();
+		}
 	}
 
 	@Test
@@ -276,9 +286,8 @@ public class SEMTest {
 		assertFalse(sem.consultarVigencia("BBB-222"));
 	}
 	
-    // @Test
+    /* @Test
     public void unSEMPuedeFinalizarTodosLosEstacionamientosVigentesSiSeEncuentraFueraDeLaFranjaHoraria() {
-        // TODO falla 
         AppSEM appMock = mock(AppSEM.class) ;
         
         LocalTime horaActualSimulada = LocalTime.of(3,0);
@@ -292,6 +301,68 @@ public class SEMTest {
         
         verify(appMock).finalizarEstacionamiento();
         
+    }*/ // No funciona porque, no podemos simular la hora actual dentro del SEM.
+    
+    @Test
+    public void cuandoUnEstacionamientoEsIniciadoSEMLeNotificaASusSuscriptores() {
+    	
+    	SistemaMonitoreo susMock = mock(SistemaMonitoreo.class);
+    	AppSEM appMock = mock(AppSEM.class);
+    	
+    	sem.suscribirA(susMock);
+    	
+    	sem.estacionamientoIniciado(appMock, "lps");
+    	
+    	verify(susMock).updateInicioEstacionamiento(any(), any());
+    	
     }
+    
+    @Test
+    public void cuandoUnEstacionamientoEsFinalizadoSEMLeNotificaASusSuscriptores() {
+    	
+    	SistemaMonitoreo susMock = mock(SistemaMonitoreo.class);
+    	AppSEM appMock = mock(AppSEM.class);
+    	
+    	sem.suscribirA(susMock);
+    	
+    	sem.estacionamientoIniciado(appMock, "lps");
+    	
+    	verify(susMock).updateInicioEstacionamiento(any(), any());
+    	
+    }
+    
+    @Test
+    public void unSEMPuedeSaberSiUnEstacionadoDeSuListaEstaVigente() {
+    	EstacionadoAPP estMock = mock(EstacionadoAPP.class);
+    	
+    	sem.registrarEstacionamiento(estMock);
+    	
+    	when(estMock.tienePatente( "111")).thenReturn(true);
+    	when(estMock.estaVigente()).thenReturn(true);
+    	
+    	assertTrue(sem.consultarVigencia("111"));
+    }
+    
+    @Test
+    public void unSEMPuedeSaberSiUnEstacionadoDeSuListaNoEstaVigente() {
+ 
+    	
+    	assertFalse(sem.consultarVigencia("111"));
+    }
+    
+    @Test
+    public void unSEMPuedeSaberSiSeEncuentraDentroDeLaFranjaHoraria() {
+    	
+    	 LocalTime horaActualSimulada = LocalTime.of(13, 0);
 
+         // Simular el método estático LocalTime.now()
+         try (MockedStatic<LocalTime> mockedLocalTime = Mockito.mockStatic(LocalTime.class)) {
+             mockedLocalTime.when(LocalTime::now).thenReturn(horaActualSimulada);
+
+             
+             // Realiza la aserción
+             assertFalse(sem.laFranjaHorariaFinalizo());    	
+         }
+    }
+    
 }

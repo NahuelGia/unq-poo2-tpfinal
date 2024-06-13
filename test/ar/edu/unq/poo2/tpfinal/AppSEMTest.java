@@ -145,10 +145,6 @@ public class AppSEMTest {
 		verify(modoVigente, times(1)).finNotificado(appTest);
 	}
 
-	@Test
-	public void unaAppSEMPuedeNotificarQueTieneSaldoInsuficiente() {
-
-	}
 
 	@Test
 	public void unaAppSEMSabeQueNoTieneElSaldoMinimoParaRealizarUnEstacionamiento() {

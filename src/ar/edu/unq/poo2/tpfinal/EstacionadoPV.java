@@ -32,7 +32,6 @@ public class EstacionadoPV extends Estacionado {
 		setHoraFin(LocalTime.now());
 		int cantHoras = getHoraFin().getHour() - getHoraFin().getHour();
 		setCantHoras(cantHoras);
-		// TODO testear
 	}
 
 }

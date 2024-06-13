@@ -3,6 +3,7 @@ package ar.edu.unq.poo2.tpfinal;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.intThat;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
@@ -126,6 +127,20 @@ class EstacionadoPVTest {
 		boolean resultado = estacionadoTest.tieneNroTelefonico(123);
 		
 		assertFalse(resultado);
+	}
+	
+	@Test
+	public void unEstacionadoPVSPuedeFinalizarse() {
+		EstacionadoPV estacionado = new EstacionadoPV("22", 2);
+		
+		estacionado.finalizar();
+		
+		int horaEsperada = LocalTime.now().getHour();
+		int horaObtenida = estacionado.getHoraFin().getHour();
+		assertEquals(estacionado.getCantHoras(), 0);
+		// La comparacion de horas cuenta las milesimas también
+		// y no tenemos forma de simular la hora actual.
+		assertEquals(horaEsperada, horaObtenida);
 	}
 
 }

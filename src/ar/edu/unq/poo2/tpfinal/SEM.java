@@ -147,7 +147,6 @@ public class SEM {
 	}
 
 	private void notificarInicioASuscriptores(EstacionadoAPP nuevoEstacionado) {
-		// TODO Escribir test
 		getSuscriptores().stream().forEach(s -> s.updateInicioEstacionamiento(this, nuevoEstacionado));
 	}
 
@@ -176,7 +175,6 @@ public class SEM {
 	}
 
 	public boolean consultarVigencia(String patente) {
-		// TODO Hacer tests
 		Optional<Estacionado> estacionado = getEstacionados().stream()
 				.filter(e -> e.tienePatente(patente) && e.estaVigente()).findFirst();
 
@@ -189,14 +187,12 @@ public class SEM {
 	}
 
 	public void finalizarTodosLosEstacionamientosVigentes() {
-		// TODO testear
 		if (laFranjaHorariaFinalizo()) {
 			getUsuarios().stream().forEach(a -> a.finalizarEstacionamiento());
 		}
 	}
 
-	private boolean laFranjaHorariaFinalizo() {
-		// TODO testear
+	public boolean laFranjaHorariaFinalizo() {
 		LocalTime horaActual = LocalTime.now();
 		return horaActual.isAfter(getfinFranjaHoraria()) && horaActual.isBefore(getfinFranjaHoraria());
 	}
