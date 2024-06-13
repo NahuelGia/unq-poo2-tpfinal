@@ -9,6 +9,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.time.LocalTime;
+
 public class AppSEMTest {
 	
 	private AppSEM appTest;
@@ -215,6 +219,25 @@ public class AppSEMTest {
 		verifyNoInteractions(estadoMock);	
 	}
 	
+	  @Test
+	    public void testNotificarEstacionamientoExitoso() {
+
+	        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+	        PrintStream originalOut = System.out;
+	        System.setOut(new PrintStream(outContent));
+
+	        LocalTime horaInicio = LocalTime.of(8, 0);
+	        LocalTime horaFin = LocalTime.of(18, 0);
+	        
+	        appTest.notificarEstacionamientoExitoso(horaInicio, horaFin);
+
+	        System.setOut(originalOut);
+
+	        String expectedOutput = "El estacionamiento se ha iniciado con éxito. "
+	                              + "La hora de inicio es:" + horaInicio.toString()
+	                              + "La hora máxima de fin posible:" + horaFin.toString();
+	        assertEquals(expectedOutput, outContent.toString().trim());
+	    }
 	
 	
 }

@@ -26,5 +26,13 @@ public class EstacionadoPV extends Estacionado {
 	public boolean tieneNroTelefonico(int nro) {
 		return false;
 	}
+	
+	@Override
+	public void finalizar() { 
+		setHoraFin(LocalTime.now());
+		int cantHoras = getHoraFin().getHour() - getHoraFin().getHour();
+		setCantHoras(cantHoras);
+		// TODO testear
+	}
 
 }

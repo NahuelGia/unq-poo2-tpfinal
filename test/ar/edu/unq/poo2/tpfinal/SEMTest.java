@@ -11,6 +11,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -31,6 +32,11 @@ public class SEMTest {
 		estacionadoPV2 = new EstacionadoPV("AAA-222", 6);
 		zona = new ZonaEstacionamiento("Quilmes");
 
+	}
+	
+	@Test
+	public void cuandoUnSEMEsInicializadoSuListaDeSuscriptoresEsVacia() {
+		assertTrue(sem.getSuscriptores().isEmpty());
 	}
 
 	@Test
@@ -134,7 +140,6 @@ public class SEMTest {
 		LocalTime finFranjaHoraria = LocalTime.of(20, 0);
 
 		assertEquals(sem.getfinFranjaHoraria(), finFranjaHoraria);
-
 	}
 
 	@Test

@@ -108,7 +108,7 @@ public class AppSEM implements MovementSensor {
 	}
 
 	public boolean estaEnZonaEstacionamiento() {
-		// TODO Auto-generated method stub
+		// Asumimos que mediante el gps puede responder la pregunta 
 		return false;
 	}
 
@@ -117,8 +117,10 @@ public class AppSEM implements MovementSensor {
 
 	}
 
-	public void notificarEstacionamientoExitoso(LocalTime localTime, LocalTime horaFin) {
-		// TODO Auto-generated method stub
+	public void notificarEstacionamientoExitoso(LocalTime horaInicio, LocalTime horaFin) {
+		System.out.print("El estacionamiento se ha iniciado con éxito. "
+                       + "La hora de inicio es:" + horaInicio.toString()
+                       + "La hora máxima de fin posible:" + horaFin.toString());
 
 	}
 
@@ -142,6 +144,15 @@ public class AppSEM implements MovementSensor {
 			posibleInicioEstacionamiento();
 			setWalking(true);
 		}
+	}
+
+	public void NotificaFinEstacionamiento(LocalTime horaInicio, LocalTime horaFin, int duracion, Double costo) {
+		// TODO Hacer el print con lo que se pide en el tp
+	}
+	
+	public boolean tieneNumero(int nro) {
+		// TODO testear
+		return getNroTelefono() == nro ;
 	}
 
 }

@@ -3,6 +3,7 @@ package ar.edu.unq.poo2.tpfinal;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class SEM {
 
@@ -13,20 +14,22 @@ public class SEM {
 	List<Infraccion> infracciones = new ArrayList<Infraccion>();
 	private LocalTime inicioFranjaHoraria;
 	private LocalTime finFranjaHoraria;
+	private List<SistemaMonitoreo> suscriptores;
 
 	public SEM() {
 		this.setInicioFranjaHoraria(LocalTime.of(7, 0));
 		this.setFinFranjaHoraria(LocalTime.of(20, 0));
+		this.setSuscriptores(new ArrayList<SistemaMonitoreo>());
 		
 	}
 
-	private void setFinFranjaHoraria(LocalTime of) {
-		this.finFranjaHoraria = LocalTime.of(20, 0);
+	private void setFinFranjaHoraria(LocalTime horaFin) {
+		this.finFranjaHoraria = horaFin;
 
 	}
 
-	private void setInicioFranjaHoraria(LocalTime of) {
-		this.inicioFranjaHoraria = LocalTime.of(7, 0);
+	private void setInicioFranjaHoraria(LocalTime horaInicio) {
+		this.inicioFranjaHoraria = horaInicio;
 
 	}
 
@@ -64,13 +67,33 @@ public class SEM {
 		return infracciones;
 	}
 
+	public List<SistemaMonitoreo> getSuscriptores() {
+		return suscriptores;
+	}
+
+	private void setSuscriptores(List<SistemaMonitoreo> suscriptores) {
+		this.suscriptores = suscriptores;
+	}
+	
+	public void registrarSuscriptor(SistemaMonitoreo suscriptor) {
+		this.getSuscriptores().add(suscriptor);
+	}
+
 	public void registrarEstacionamiento(Estacionado estacionado) {
 		this.getEstacionados().add(estacionado);
 	}
 
 	public void cargarSaldo(int telefono, double monto) {
-		// TODO Auto-generated method stub
-
+		// TODO testear
+		Optional<AppSEM> usuario = getUsuarios().stream()
+					                            .filter(a -> a.tieneNumero(telefono))
+					                            .findFirst() ;
+		
+		if(usuario.isPresent()) {
+			usuario.get().aumentarSaldo(monto);
+		} else {
+		  throw new IllegalArgumentException("El nro de telefono no existe");
+		}
 	}
 
 	public void registrarTicket(Ticket t) {
@@ -78,9 +101,36 @@ public class SEM {
 
 	}
 
-	public void finalizarEstacionamiento(AppSEM appSEM) {
-		// TODO Auto-generated method stub
+	public void finalizarEstacionamiento(AppSEM app) {
+		// TODO Hacer tests
+		int nro = app.getNroTelefono() ;
+		
+		Estacionado estacionado = getEstacionados().stream()
+												   .filter(e -> e.tieneNroTelefonico(nro))
+												   .findFirst().get();
+		
+		// Se que si o si hay un estacionado gracias a los estado de la app
+		if (estacionado.estaVigente()) {
+			estacionado.finalizar();
+		} 
+		
+		LocalTime horaInicio = estacionado.getHoraInicio();
+	    
+		LocalTime horaFin = estacionado.getHoraFin();
+		
+	    int duracion = horaFin.getHour() - horaInicio.getHour();
+	    
+	    Double costo = duracion * getPrecioPorHora();
+	    
+	    app.NotificaFinEstacionamiento(horaInicio, horaFin, duracion, costo  );
+		
+		notificarFinASuscriptores((EstacionadoAPP)estacionado);// Se que voy a conseguir un EstacionadoAPP
+	}
 
+	private void notificarFinASuscriptores(EstacionadoAPP estacionado) {
+		// TODO Escribir los tests
+		getSuscriptores().stream()
+		 .forEach(s -> s.updateFinEstacionamiento(this, estacionado));
 	}
 
 	public void estacionamientoIniciado(AppSEM appSEM, String patente) {
@@ -99,7 +149,15 @@ public class SEM {
 		
 		this.registrarEstacionamiento(nuevoEstacionado);
 		appSEM.notificarEstacionamientoExitoso(horaActual, horaFin);
+		
+		notificarInicioASuscriptores(nuevoEstacionado);
 
+	}
+
+	private void notificarInicioASuscriptores(EstacionadoAPP nuevoEstacionado) {
+		// TODO Escribir test
+		getSuscriptores().stream()
+						 .forEach(s -> s.updateInicioEstacionamiento(this, nuevoEstacionado));
 	}
 
 	public void liberarEstacionados() {
@@ -127,9 +185,12 @@ public class SEM {
 	}
 
 	public boolean consultarVigencia(String patente) {
-		// TODO Auto-generated method stub
-		return false;
+		// TODO Hacer tests
+		Optional<Estacionado> estacionado = getEstacionados().stream()
+						                                     .filter(e -> e.tienePatente(patente) && e.estaVigente())
+						                                     .findFirst();
+		
+		return estacionado.isPresent();
 	}
-
 	
 }

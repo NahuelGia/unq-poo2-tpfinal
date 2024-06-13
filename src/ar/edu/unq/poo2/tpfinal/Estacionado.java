@@ -53,5 +53,9 @@ public abstract class Estacionado {
 	}
 	
 	public abstract boolean tieneNroTelefonico(int nro);
+
+	public void finalizar() {
+		setHoraFin(LocalTime.now());
+	}
 	
 }
